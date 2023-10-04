@@ -43,7 +43,6 @@ def gameInit():
     global player
     global rock
     p.init()
-    
     p.mouse.set_visible(False)
     mixer.init()
     screen = p.display.set_mode(size, p.RESIZABLE) 
@@ -51,7 +50,7 @@ def gameInit():
     surface = p.Surface(size)
     rock = Rock(RED, r.randint(0, 700), 10, 30, 20, screen)
     objArray.append(rock)
-    player = Ship(screenWidth / 2, screenHeight / 2, playerSpeed, playerSprite, 10, 20, 0, 0)
+    player = Ship(screenWidth / 2, screenHeight / 2, playerSpeed, playerSprite, 10, 20, 0, 0, 100)
     
 
 #DISPLAY GAME
@@ -60,6 +59,7 @@ def gameDisplay():
     drawMouse()
     player.display(screen, mousePos)
     rock.display()
+    p.draw.rect(screen, CYAN, p.Rect(600, 600, 150, 20), 200)
     p.display.update()
     clock.tick(60)
 
@@ -102,6 +102,7 @@ def main():
 
 #UPDATE
         player.update(xDir, yDir, rock)
+        p.draw.rect(screen, CYAN, p.Rect(350, 350, 50, 20), 200)
         
 #DISPLAY
         gameDisplay()
