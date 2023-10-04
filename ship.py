@@ -34,7 +34,7 @@ class Ship:
     def display(self, screen, mousePos):
         self.ship = p.image.load(self.img)
         self.ship = p.transform.rotate(self.ship, -math.degrees(self.getAngle(mousePos)))
-        screen.blit(self.ship, (self.posx, self.posy))
+        screen.blit(self.ship, (self.posx - 25, self.posy - 25))
 
     def update(self, xDir, yDir, obj):
             self.posx = self.posx + self.speed * xDir

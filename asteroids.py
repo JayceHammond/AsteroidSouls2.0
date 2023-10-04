@@ -102,7 +102,6 @@ def main():
 
 #UPDATE
         player.update(xDir, yDir, rock)
-        p.draw.rect(screen, CYAN, p.Rect(350, 350, 50, 20), 200)
         
 #DISPLAY
         gameDisplay()
