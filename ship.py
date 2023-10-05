@@ -17,18 +17,26 @@ MAGENTA = (255, 0, 255)
 
 class Ship:
     def __init__(self, posx, posy, speed, img, width, height, xDir, yDir, health):
+        #Player position and direction values
         self.posx = posx
         self.posy = posy
         self.xDir = xDir
         self.yDir = yDir
+        #Image loading
         self.img = img
+        #Sizing of ship
         self.width = width
         self.height = height
+        #Player Vars
         self.speed = speed
         self.health = health
         self.name = "Player"
         self.ship = p.image.load(self.img)
         self.col = Collider(self)
+        #Firing values
+        self.firing = False  # Add a flag to track if the gun is firing
+        self.fire_cooldown = 15  # Add a cooldown period (in frames) between shots
+        self.cooldown_counter = 0  # Initialize the cooldown counter
 
 
     def display(self, screen, mousePos):
@@ -40,7 +48,7 @@ class Ship:
             self.posx = self.posx + self.speed * xDir
             self.posy = self.posy + self.speed * yDir
 
-            self.col.checkCollision(obj, self.xDir, self)
+            #self.col.checkCollision(obj, self.xDir, self)
 
 
     def getAngle(self, mousePos):
@@ -59,5 +67,12 @@ class Ship:
             adjusted_angle = math.radians(adjusted_angle_degrees)
 
             return adjusted_angle
+    
+    def fire(self):
+        if not self.firing and self.cooldown_counter <= 0:
+            self.firing = True
+            self.cooldown_counter = self.fire_cooldown
+            return True
+        return False
 
     

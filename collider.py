@@ -20,6 +20,4 @@ class Collider:
         #Check if a collision has occurred
         if distance < (self.width / 2) + (obj.width / 2):
             collided = True
-            print(collided)
-            if collided == True:
-                parent.health -= 10
+            return collided
