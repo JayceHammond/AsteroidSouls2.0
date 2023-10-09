@@ -21,8 +21,8 @@ MAGENTA = (255, 0, 255)
 GREY = (128,128,128)
 
 #DISPLAY CONSTS
-screenWidth = 700
-screenHeight = 700
+
+screenWidth, screenHeight = 700, 700
 size = (screenWidth, screenHeight)
 
 #PATHS
@@ -61,20 +61,22 @@ def gameInit():
     healthBar = HealthBar(0, 675, player.health)
     
 
-def displayTitle():
+def displayTitle(screenWidth, screenHeight):
         font = p.font.Font("Assets\Evil Empire.otf", 100)
         text = font.render("Asteroid", True, ORANGE, BLACK)
         text2 = font.render("Souls", True, ORANGE, BLACK)
         textRect = text.get_rect()
         text2Rect = text.get_rect()
-        textRect.center = (350,150)
-        text2Rect.center = (420, 250)
+        textRect.center = (screenWidth / 2 ,150)
+        text2Rect.center = (textRect.center[0]+ 80, 250)
         screen.blit(text, textRect)
         screen.blit(text2, text2Rect)
 
 
 #DISPLAY GAME
 def gameDisplay():
+    screenWidth, screenHeight = p.display.get_surface().get_size()
+    size = screenWidth, screenHeight
     if state == "GAME":
         screen.fill(BLACK)
         drawMouse()
@@ -90,11 +92,13 @@ def gameDisplay():
     if state == "START":
         screen.fill(BLACK)
         global startButton
-        startButton = Button("Start", 350, 350)
-        optionsButton = Button("Options", 350, 400)
-        displayTitle()
+        startButton = Button("Start", screenWidth / 2, screenHeight / 2.15)
+        optionsButton = Button("Options", screenWidth / 2, screenHeight / 1.95)
+        quitButton = Button("Quit", screenWidth / 2, screenHeight / 1.75)
+        displayTitle(screenWidth, screenHeight)
         startButton.display(screen)
         optionsButton.display(screen)
+        quitButton.display(screen)
         p.display.update()
         clock.tick(60)
         return startButton
@@ -152,8 +156,7 @@ def main():
                     return
                 if event.type == p.MOUSEBUTTONDOWN:
                     if(mousePos[0] >= startButton.x - 45 and mousePos[0] <= 400):
-                        state = "GAME"
-
+                        print("bah")
             gameDisplay()
             
         if state == "GAME":
