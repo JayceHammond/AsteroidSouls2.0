@@ -61,6 +61,18 @@ def gameInit():
     healthBar = HealthBar(0, 675, player.health)
     
 
+def displayTitle():
+        font = p.font.Font("Assets\Evil Empire.otf", 100)
+        text = font.render("Asteroid", True, ORANGE, BLACK)
+        text2 = font.render("Souls", True, ORANGE, BLACK)
+        textRect = text.get_rect()
+        text2Rect = text.get_rect()
+        textRect.center = (350,150)
+        text2Rect.center = (420, 250)
+        screen.blit(text, textRect)
+        screen.blit(text2, text2Rect)
+
+
 #DISPLAY GAME
 def gameDisplay():
     if state == "GAME":
@@ -80,6 +92,7 @@ def gameDisplay():
         global startButton
         startButton = Button("Start", 350, 350)
         optionsButton = Button("Options", 350, 400)
+        displayTitle()
         startButton.display(screen)
         optionsButton.display(screen)
         p.display.update()
@@ -142,10 +155,7 @@ def main():
                         state = "GAME"
 
             gameDisplay()
-
-
-
-
+            
         if state == "GAME":
             angle = player.getAngle(mousePos)
             if len(asteroidArray) == 0:
