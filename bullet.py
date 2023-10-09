@@ -45,3 +45,11 @@ class Bullet:
         new_y = posy + distance * math.sin(angle)
 
         return new_x, new_y
+    
+    def check_collision(self, rock):
+        # Calculate the distance between the bullet and the center of the rock
+        distance = math.sqrt((self.posx - rock.posx) ** 2 + (self.posy - rock.posy) ** 2)
+
+        # Check if a collision has occurred (assuming the bullet radius is small)
+        if distance < self.radius + (rock.width / 2):
+            return True

@@ -29,9 +29,8 @@ class Rock:
         #self.rock.set_colorkey(colorArr[r.randint(0, 5)])
 
     def display(self, screen):
-        screen.blit(self.rock, (self.posx, self.posy))
+        screen.blit(self.rock, (self.posx - 15, self.posy - 15))
 
     def update(self):
         self.posy += 1
-        self.clean_rock = self.rock.copy()
-        self.rock = p.transform.rotate(self.clean_rock, 1)
+

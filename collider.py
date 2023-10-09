@@ -12,12 +12,13 @@ class Collider:
         self.height = parent.height
         self.center = (self.posx, self.posy)
     
-    def checkCollision(self, obj, xDir, parent):
+    def checkCollision(self, objArray, xDir, parent):
         #Calculate the distance between the collider and the center of the obj
         collided = False
-        distance = math.sqrt((parent.posx - obj.posx) ** 2 + (parent.posy - obj.posy) ** 2)
+        for obj in objArray:
+            distance = math.sqrt((parent.posx - obj.posx) ** 2 + (parent.posy - obj.posy) ** 2)
 
-        #Check if a collision has occurred
-        if distance < (self.width / 2) + (obj.width / 2):
-            collided = True
-            return collided
+            #Check if a collision has occurred
+            if distance < (self.width / 2) + (obj.width / 2):
+                collided = True
+                return collided
