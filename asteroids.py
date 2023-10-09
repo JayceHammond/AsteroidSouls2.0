@@ -156,7 +156,7 @@ def main():
                     return
                 if event.type == p.MOUSEBUTTONDOWN:
                     if(mousePos[0] >= startButton.x - 45 and mousePos[0] <= 400):
-                        print("bah")
+                        state = "GAME"
             gameDisplay()
             
         if state == "GAME":
@@ -193,8 +193,8 @@ def main():
                         if bullet.check_collision(rock):
                             killCount += 1
                             asteroidArray.remove(rock)
-                            if objArray: 
-                                objArray.remove(bullet)
+                    if len(objArray) > 0: 
+                        objArray.remove(bullet)
                 
 
             
