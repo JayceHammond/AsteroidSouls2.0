@@ -193,8 +193,8 @@ def main():
                         if bullet.check_collision(rock):
                             killCount += 1
                             asteroidArray.remove(rock)
-                    if len(objArray) > 0: 
-                        objArray.remove(bullet)
+                            if len(objArray) > 0: 
+                                objArray.remove(bullet)
                 
 
             
