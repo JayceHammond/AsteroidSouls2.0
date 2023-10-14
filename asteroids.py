@@ -3,11 +3,11 @@ from pygame import mixer
 import math
 import numpy
 import random as r
-from ship import Ship
-from rock import Rock
-from healthbar import HealthBar
-from bullet import Bullet
-from button import Button
+from PlayerScripts.ship import Ship
+from AsteroidScripts.rock import Rock
+from PlayerScripts.healthbar import HealthBar
+from PlayerScripts.bullet import Bullet
+from MenuScripts.button import Button
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -57,7 +57,7 @@ def gameInit():
     p.display.set_caption(title)
     surface = p.Surface(size)
     #objArray.append(rock)
-    player = Ship(screenWidth / 2, screenHeight / 2, playerSpeed, playerSprite, 10, 20, 0, 0, 100)
+    player = Ship(screenWidth / 2, screenHeight / 2, playerSpeed, playerSprite, 10, 20, 0, 0, 100, size)
     healthBar = HealthBar(0, 675, player.health)
     
 
@@ -105,7 +105,16 @@ def gameDisplay():
         
 
 def randomizeRockSpawn():
-    rockSpawnZone = (r.randint(0, 700), r.randint(0, 100))
+    rockSpawnX = 0
+    rockSpawnY = r.randint(0,700)
+    if rockSpawnY < 100: 
+        rockSpawnX = r.randint(0,700)
+    elif rockSpawnY > 600:
+        rockSpawnX = r.randint(0,700)
+    else:
+        rockSpawnX = r.randint(0, 100) or r.randint(600, 700)
+
+    rockSpawnZone = rockSpawnX, rockSpawnY
     return rockSpawnZone
 
 def drawMouse():
@@ -131,7 +140,7 @@ def displayObjArray():
 def spawnRock(spawnNum):
     i = 0
     while i < spawnNum:
-        rock = Rock(randomizeRockSpawn()[0], randomizeRockSpawn()[1], screen)
+        rock = Rock(randomizeRockSpawn()[0], randomizeRockSpawn()[1], screen, size)
         asteroidArray.append(rock)
         i += 1
 
@@ -142,6 +151,7 @@ def main():
     xDir, yDir = 0, 0
     running = True
     killCount = 0
+    projectilesArr = []
     #STATE
     state = "START"
     spawnable = True
@@ -162,7 +172,7 @@ def main():
         if state == "GAME":
             angle = player.getAngle(mousePos)
             if len(asteroidArray) == 0:
-                spawnRock(5)
+                spawnRock(1000)
             for event in p.event.get():
                 p.event.set_grab(False)
                 if event.type == p.QUIT:
@@ -188,13 +198,20 @@ def main():
                     shot = Bullet(player.posx, player.posy, RED, 5, 10, angle)
                     objArray.append(shot)
 
+
+
                 for bullet in objArray:
                     for rock in asteroidArray:
                         if bullet.check_collision(rock):
                             killCount += 1
+                            rock.exploded = True
+                            rock.explode(projectilesArr)
                             asteroidArray.remove(rock)
-                            if len(objArray) > 0: 
+                            if bullet in objArray:
                                 objArray.remove(bullet)
+                for projectile in projectilesArr:
+                    projectile.display()
+
                 
 
             

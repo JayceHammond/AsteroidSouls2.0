@@ -3,8 +3,8 @@ from pygame import mixer
 import math
 import numpy
 import random as r
-from ship import Ship
-from rock import Rock
+from PlayerScripts.ship import Ship
+from AsteroidScripts.rock import Rock
 
 # Define some colors
 BLACK = (0, 0, 0)

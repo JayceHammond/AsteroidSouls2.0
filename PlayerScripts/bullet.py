@@ -3,7 +3,7 @@ from pygame import mixer
 import math
 import numpy
 import random as r
-from collider import Collider
+from PlayerScripts.collider import Collider
 
 # Define some colors
 BLACK = (0, 0, 0)

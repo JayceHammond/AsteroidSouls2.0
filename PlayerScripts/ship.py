@@ -3,7 +3,7 @@ from pygame import mixer
 import math
 import numpy
 import random as r
-from collider import Collider
+from PlayerScripts.collider import Collider
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -16,7 +16,7 @@ CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
 
 class Ship:
-    def __init__(self, posx, posy, speed, img, width, height, xDir, yDir, health):
+    def __init__(self, posx, posy, speed, img, width, height, xDir, yDir, health, screenSize):
         #Player position and direction values
         self.posx = posx
         self.posy = posy
@@ -27,6 +27,7 @@ class Ship:
         #Sizing of ship
         self.width = width
         self.height = height
+        self.screenSize = screenSize
         #Player Vars
         self.speed = speed
         self.health = health
@@ -47,6 +48,12 @@ class Ship:
     def update(self, xDir, yDir):
             self.posx = self.posx + self.speed * xDir
             self.posy = self.posy + self.speed * yDir
+            if self.posy > self.screenSize[1]:
+                self.posy = 0
+            if self.posx > self.screenSize[0]:
+                self.posx = 0
+            if self.posx < 0:
+                self.posx = self.screenSize[0]
 
             #self.col.checkCollision(obj, self.xDir, self)
 

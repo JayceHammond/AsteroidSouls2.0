@@ -3,10 +3,10 @@ from pygame import mixer
 import math
 import numpy
 import random as r
-from ship import Ship
-from rock import Rock
-from healthbar import HealthBar
-from bullet import Bullet
+from PlayerScripts.ship import Ship
+from AsteroidScripts.rock import Rock
+from PlayerScripts.healthbar import HealthBar
+from PlayerScripts.bullet import Bullet
 
 
 # Define some colors
