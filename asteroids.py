@@ -8,6 +8,7 @@ from AsteroidScripts.rock import Rock
 from PlayerScripts.healthbar import HealthBar
 from PlayerScripts.bullet import Bullet
 from MenuScripts.button import Button
+import os
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -28,6 +29,9 @@ size = (screenWidth, screenHeight)
 #PATHS
     #SPRITES
 playerSprite = "Assets\spaceship.png"
+imgPaths = os.listdir("Assets\ParallaxAssets")
+bg_imgs = [p.image.load(os.path.join("Assets/ParallaxAssets", path)) for path in imgPaths]
+
 
 #UI CONSTS
 title = "Asteroid Souls"
@@ -78,7 +82,8 @@ def gameDisplay():
     screenWidth, screenHeight = p.display.get_surface().get_size()
     size = screenWidth, screenHeight
     if state == "GAME":
-        screen.fill(BLACK)
+        #screen.fill(BLACK)
+        draw_bg()
         drawMouse()
         player.display(screen, mousePos)
         healthBar.displayHealth(screen)
@@ -102,7 +107,10 @@ def gameDisplay():
         p.display.update()
         clock.tick(60)
         return startButton
-        
+def draw_bg():
+    for img in bg_imgs:
+        img = p.transform.scale(img, (screenWidth, screenHeight), screen)
+        screen.blit(img, (0,0))
 
 def randomizeRockSpawn():
     rockSpawnX = 0
@@ -172,7 +180,7 @@ def main():
         if state == "GAME":
             angle = player.getAngle(mousePos)
             if len(asteroidArray) == 0:
-                spawnRock(1000)
+                spawnRock(10)
             for event in p.event.get():
                 p.event.set_grab(False)
                 if event.type == p.QUIT:
