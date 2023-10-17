@@ -29,9 +29,13 @@ size = (screenWidth, screenHeight)
 #PATHS
     #SPRITES
 playerSprite = "Assets\spaceship.png"
-imgPaths = os.listdir("Assets\ParallaxAssets")
-bg_imgs = [p.image.load(os.path.join("Assets/ParallaxAssets", path)) for path in imgPaths]
-
+#imgPaths = os.listdir("Assets\ParallaxAssets")
+bg_imgs = []
+for i in range(1, 5):
+    bg_img = p.image.load(f"Assets/ParallaxAssets/plx-{i}.png")
+    bg_imgs.append(bg_img)
+bg_width = bg_imgs[0].get_width()
+bg_height = bg_imgs[0].get_width()
 
 #UI CONSTS
 title = "Asteroid Souls"
@@ -40,6 +44,11 @@ title = "Asteroid Souls"
 clock = p.time.Clock()
 objArray = []
 asteroidArray = []
+global scrollY
+global scrollX
+scrollY = 0
+scrollX = 0
+
 
 #GAME VARS
 playerSpeed = 7
@@ -107,10 +116,26 @@ def gameDisplay():
         p.display.update()
         clock.tick(60)
         return startButton
+    
 def draw_bg():
-    for img in bg_imgs:
-        img = p.transform.scale(img, (screenWidth, screenHeight), screen)
-        screen.blit(img, (0,0))
+    global scrollX
+    scrollX -= 10
+    min = 0
+    max = 5
+    for x in range(min, max):
+        speed = 1
+        count = 0
+        for img in bg_imgs:
+            count += 1
+            screen.blit(img, ((x * bg_width) + scrollX * speed, 0))
+            if count > 1:
+                speed += 0.8
+
+        
+        
+    if abs(scrollX) > bg_width:
+        scrollX += bg_width
+    
 
 def randomizeRockSpawn():
     rockSpawnX = 0
@@ -232,6 +257,7 @@ def main():
                 main()
     #DISPLAY
             gameDisplay()
+            p.event.pump()
 
 
 main()
