@@ -181,17 +181,23 @@ def spawnRock(spawnNum):
 def main():
     global killCount
     global state
+    global mobCount
     xDir, yDir = 0, 0
     running = True
     killCount = 0
+    mobCount = 0
     projectilesArr = []
     #STATE
     state = "START"
     spawnable = True
     gameInit()
-    spawnRock(5)
+    spawnRock(mobCount)
     while running:
         global mousePos
+        if mobCount > 20:
+            mobCount = 0
+        else:
+            mobCount += 5
         mousePos = p.mouse.get_pos()
         if state == "START":
             for event in p.event.get():
@@ -205,7 +211,7 @@ def main():
         if state == "GAME":
             angle = player.getAngle(mousePos)
             if len(asteroidArray) == 0:
-                spawnRock(10)
+                spawnRock(mobCount)
             for event in p.event.get():
                 p.event.set_grab(False)
                 if event.type == p.QUIT:
@@ -246,7 +252,8 @@ def main():
                     projectile.display()
 
                 
-
+            clock.tick()
+            print(clock.get_fps())
             
 
     #UPDATE
