@@ -53,6 +53,11 @@ scrollX = 0
 #GAME VARS
 playerSpeed = 7
 
+#INITIALIZE SOUND
+p.mixer.init()
+bg_music = p.mixer.Sound("Assets\SFX\StigmaDreamscapeTheme _eScape.wav")
+shootSound = p.mixer.Sound("Assets\SFX\Laser.mp3")
+
 #INITIALIZE GAME
 def gameInit():
     #GLOBAL VARS
@@ -60,10 +65,7 @@ def gameInit():
     global surface
     global player
     global healthBar
-    global bg_music
     p.init()
-    p.mixer.init()
-    bg_music = p.mixer.Sound("Assets\SFX\StigmaDreamscapeTheme _eScape.wav")
     bg_music.play(1)
     if state == "GAME":
         p.mouse.set_visible(False)
@@ -239,6 +241,7 @@ def main():
                     if event.key == p.K_d or event.key == p.K_a:
                         xDir = 0
                 if event.type == p.MOUSEBUTTONDOWN:
+                    shootSound.play(0)
                     shot = Bullet(player.posx, player.posy, RED, 5, 10, angle)
                     objArray.append(shot)
 
