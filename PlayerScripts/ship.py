@@ -91,11 +91,5 @@ class Ship:
 
             return adjusted_angle
     
-    def fire(self):
-        if not self.firing and self.cooldown_counter <= 0:
-            self.firing = True
-            self.cooldown_counter = self.fire_cooldown
-            return True
-        return False
 
     

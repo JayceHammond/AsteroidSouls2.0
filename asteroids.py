@@ -51,7 +51,7 @@ scrollX = 0
 
 
 #GAME VARS
-playerSpeed = 7
+playerSpeed = 10
 
 #INITIALIZE SOUND
 p.mixer.init()
@@ -242,7 +242,7 @@ def main():
                         xDir = 0
                 if event.type == p.MOUSEBUTTONDOWN:
                     shootSound.play(0)
-                    shot = Bullet(player.posx, player.posy, RED, 5, 10, angle)
+                    shot = Bullet(player.posx, player.posy, RED, 5, 20, angle)
                     objArray.append(shot)
 
 
