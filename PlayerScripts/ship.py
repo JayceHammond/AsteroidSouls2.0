@@ -39,9 +39,7 @@ class Ship:
         self.ship = p.image.load(self.img)
         self.col = Collider(self)
         #Firing values
-        self.firing = False  # Add a flag to track if the gun is firing
-        self.fire_cooldown = 15  # Add a cooldown period (in frames) between shots
-        self.cooldown_counter = 0  # Initialize the cooldown counter
+        self.weapon = "BASE"
 
         # Load all asteroid images into a list
         self.ship_images = [p.image.load(os.path.join("Assets\SpaceshipAssets", path)) for path in file_paths]

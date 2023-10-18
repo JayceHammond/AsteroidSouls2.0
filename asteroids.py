@@ -214,6 +214,10 @@ def main():
             gameDisplay()
             
         if state == "GAME":
+
+
+            player.weapon = "SHOTGUN"
+
             angle = player.getAngle(mousePos)
             if len(asteroidArray) == 0:
                 spawnRock(mobCount)
@@ -241,9 +245,21 @@ def main():
                     if event.key == p.K_d or event.key == p.K_a:
                         xDir = 0
                 if event.type == p.MOUSEBUTTONDOWN:
-                    shootSound.play(0)
-                    shot = Bullet(player.posx, player.posy, RED, 5, 20, angle)
-                    objArray.append(shot)
+                    if player.weapon == "BASE":
+                        shootSound.play(0)
+                        shot = Bullet(player.posx, player.posy, RED, 5, 20, angle)
+                        objArray.append(shot)
+                    if player.weapon == "SHOTGUN":
+                        shootSound.play(0)
+                        for i in range(0, 3):
+                            if i == 0:
+                                spreadShot = Bullet(player.posx, player.posy, ORANGE, 5, 20, angle - 45)
+                            if i == 1:
+                                spreadShot = Bullet(player.posx, player.posy, ORANGE, 5, 20,  angle)
+                            if i == 2:
+                                spreadShot = Bullet(player.posx, player.posy, ORANGE, 5, 20,  angle + 45)
+
+                            objArray.append(spreadShot)
 
 
 
