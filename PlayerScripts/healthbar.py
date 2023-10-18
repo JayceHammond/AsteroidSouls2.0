@@ -22,14 +22,25 @@ class HealthBar:
         self.posx = posx
         self.posy = posy
         self.health = health
+        self.staminaCharge = 3
 
     def displayHealth(self, screen):
         healthBar = p.draw.rect(screen, RED, p.Rect(self.posx, self.posy, 200, 10), 200)
         damageBar = p.draw.rect(screen, CYAN, p.Rect(self.posx, self.posy, self.health * 2, 10), 200)
 
+    def displayStaminaBars(self, screen, maxCharge):
+        barWidth = 0
+        posx = 0
+        staminaBarArr = []
+        for i in range(0, maxCharge):
+            bar = p.draw.rect(screen, ORANGE, p.Rect(posx + barWidth, self.posy + 20, 40, 20))
+            staminaBarArr.append(bar)
+            posx += barWidth
+            barWidth = 40
+
     def updateHealth(self, colBool):
         if colBool == True:
-            self.health -= 1
+            self.health -= 2
             print(self.health)
             if self.health  == 0:
                 return True

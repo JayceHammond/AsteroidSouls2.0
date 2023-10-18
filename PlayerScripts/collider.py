@@ -4,6 +4,9 @@ import math
 import numpy
 import random as r
 
+p.mixer.init()
+dmgSound = p.mixer.Sound("Assets\SFX\dmgSFX.mp3")
+
 class Collider:
     def __init__(self, parent):
         self.posx = parent.posx
@@ -20,5 +23,6 @@ class Collider:
 
             #Check if a collision has occurred
             if distance < (self.width / 2) + (obj.width / 2):
+                dmgSound.play(0)
                 collided = True
                 return collided

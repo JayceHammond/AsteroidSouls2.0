@@ -34,7 +34,7 @@ class Rock:
         self.xdir = r.randint(-1, 1)
         if self.xdir == 0:
             self.xdir = 1
-        self.xspeed = 5
+        self.xspeed = 8
 
         # Load all asteroid images into a list
         self.rock_images = [p.image.load(os.path.join("Assets/AsteroidAssets", path)) for path in file_paths]
@@ -51,7 +51,7 @@ class Rock:
             print("I DISPLAY")
 
     def update(self):
-        self.posy += 3
+        self.posy += 5
         self.posx += self.xspeed * self.xdir
         # Rotate the image by updating the current frame
         self.current_frame = (self.current_frame + 1) % len(self.rock_images)

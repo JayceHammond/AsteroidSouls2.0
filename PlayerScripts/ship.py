@@ -40,6 +40,7 @@ class Ship:
         self.col = Collider(self)
         #Firing values
         self.weapon = "BASE"
+        self.stam = 3
 
         # Load all asteroid images into a list
         self.ship_images = [p.image.load(os.path.join("Assets\SpaceshipAssets", path)) for path in file_paths]
@@ -55,9 +56,18 @@ class Ship:
 
     def dash(self, stam, dist):
         self.current_frame = (self.current_frame + 1) % len(self.ship_images)
-        if stam > 0:
+        if self.stam > 0:
             self.posx += dist * self.xDir
             self.posy += dist * self.yDir
+
+    def dash_invulnerable(self, stam, dist):
+        if stam > 0:
+            original_x = self.posx
+            original_y = self.posy
+            self.posx += original_x + dist * self.xDir
+            if self.health < 100:
+                 return "heal"
+
 
     def update(self, xDir, yDir):
             self.posx = self.posx + self.speed * xDir
@@ -88,6 +98,16 @@ class Ship:
             adjusted_angle = math.radians(adjusted_angle_degrees)
 
             return adjusted_angle
+    
+
+
+    def reset(self):
+        self.posx = self.screenSize[0] // 2  # Reset player's X position to the center of the screen
+        self.posy = self.screenSize[1] // 2  # Reset player's Y position to the center of the screen
+        self.xDir = 0  # Reset X direction
+        self.yDir = 0  # Reset Y direction
+        self.health = 100  # Reset player's health
+        self.weapon = "BASE"
     
 
     

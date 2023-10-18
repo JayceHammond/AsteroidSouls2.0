@@ -8,6 +8,7 @@ from AsteroidScripts.rock import Rock
 from PlayerScripts.healthbar import HealthBar
 from PlayerScripts.bullet import Bullet
 from MenuScripts.button import Button
+from powerup import Powerup
 import os
 
 # Define some colors
@@ -51,12 +52,19 @@ scrollX = 0
 
 
 #GAME VARS
+global bulletSize
+global playerSpeed
 playerSpeed = 10
+bulletSize = 5
+powerUpArr = ["heal", "bullet_size", "player_speed", "player_stamina"]
 
 #INITIALIZE SOUND
 p.mixer.init()
 bg_music = p.mixer.Sound("Assets\SFX\StigmaDreamscapeTheme _eScape.wav")
 shootSound = p.mixer.Sound("Assets\SFX\Laser.mp3")
+bulletGrowSound = p.mixer.Sound("Assets\SFX\MushroomSoundEffect.mp3")
+gunUpgradeSound = p.mixer.Sound("Assets\SFX\shotgun-reload.mp3")
+speedUpSound = p.mixer.Sound("Assets\SFX\LimitBreakSoundEffect.mp3")
 
 #INITIALIZE GAME
 def gameInit():
@@ -77,7 +85,6 @@ def gameInit():
     #objArray.append(rock)
     player = Ship(screenWidth / 2, screenHeight / 2, playerSpeed, playerSprite, 10, 20, 0, 0, 100, size)
     healthBar = HealthBar(0, 675, player.health)
-    
 
 def displayTitle(screenWidth, screenHeight):
         font = p.font.Font("Assets\Evil Empire.otf", 100)
@@ -101,6 +108,9 @@ def gameDisplay():
         drawMouse()
         player.display(screen, mousePos)
         healthBar.displayHealth(screen)
+        healthBar.displayStaminaBars(screen, 3)
+        buff = r.randint(0, len(powerUpArr))
+        Powerup(screen, buff, r.randint(0, 700), r.randint(0, 700)).draw()
         displayObjArray()
         displayKills(killCount, 600, 675)
         for rock in asteroidArray:
@@ -182,6 +192,18 @@ def spawnRock(spawnNum):
         asteroidArray.append(rock)
         i += 1
 
+def resetGame():
+    # Reset all game-related variables
+    global killCount, mobCount, player, healthBar, objArray, asteroidArray, playerSpeed, bulletSize
+    killCount = 0
+    mobCount = 0
+    playerSpeed = 10
+    bulletSize = 5
+    healthBar = HealthBar(0, 675, player.health)
+    player.reset()
+    objArray = []
+    asteroidArray = []
+
 
 def main():
     global killCount
@@ -197,9 +219,16 @@ def main():
     spawnable = True
     gameInit()
     spawnRock(mobCount)
+    bulletBuff = False
+    speedBuff = False
+    healBuff = False
+    staminaBuff = False
+    gunBuff = False
     while running:
         global mousePos
-        if mobCount > 20:
+        global bulletSize
+        global playerSpeed
+        if mobCount > 15:
             mobCount = 0
         else:
             mobCount += 5
@@ -213,11 +242,20 @@ def main():
                         state = "GAME"
             gameDisplay()
             
-        if state == "GAME":
-
-
+        if killCount >= 20 and bulletBuff == False:
+            bulletSize += 15
+            bulletGrowSound.play(0)
+            bulletBuff = True
+        if killCount >= 30 and speedBuff == False:
+            speedUpSound.play(0)
+            playerSpeed += 5
+            speedBuff = True
+        if killCount >= 50 and gunBuff == False:
+            gunUpgradeSound.play(0)
             player.weapon = "SHOTGUN"
+            gunBuff = True
 
+        if state == "GAME":
             angle = player.getAngle(mousePos)
             if len(asteroidArray) == 0:
                 spawnRock(mobCount)
@@ -228,6 +266,10 @@ def main():
                 if event.type == p.KEYDOWN:
                     if event.key == p.K_ESCAPE:
                         return
+                    if event.key == p.K_SPACE:
+                       if player.dash_invulnerable(3, 0.75) == "heal":
+                           healthBar.health += 20
+                        
                     #CONTROLS
                     if event.key == p.K_w:
                         yDir = -1
@@ -244,25 +286,24 @@ def main():
                         yDir = 0
                     if event.key == p.K_d or event.key == p.K_a:
                         xDir = 0
-                if event.type == p.MOUSEBUTTONDOWN:
+                if event.type == p.MOUSEBUTTONDOWN and p.mouse.get_pressed()[0] == True:
                     if player.weapon == "BASE":
                         shootSound.play(0)
-                        shot = Bullet(player.posx, player.posy, RED, 5, 20, angle)
+                        shot = Bullet(player.posx, player.posy, RED, bulletSize, 20, angle)
                         objArray.append(shot)
                     if player.weapon == "SHOTGUN":
                         shootSound.play(0)
                         for i in range(0, 3):
                             if i == 0:
-                                spreadShot = Bullet(player.posx, player.posy, ORANGE, 5, 20, angle - 45)
+                                spreadShot = Bullet(player.posx, player.posy, GREEN, bulletSize, 20, angle - 45)
                             if i == 1:
-                                spreadShot = Bullet(player.posx, player.posy, ORANGE, 5, 20,  angle)
+                                spreadShot = Bullet(player.posx, player.posy, GREEN, bulletSize, 20,  angle)
                             if i == 2:
-                                spreadShot = Bullet(player.posx, player.posy, ORANGE, 5, 20,  angle + 45)
-
+                                spreadShot = Bullet(player.posx, player.posy, GREEN, bulletSize, 20,  angle + 45)
                             objArray.append(spreadShot)
 
 
-
+                            
                 for bullet in objArray:
                     for rock in asteroidArray:
                         if bullet.check_collision(rock):
@@ -275,9 +316,6 @@ def main():
                 for projectile in projectilesArr:
                     projectile.display()
 
-                
-            clock.tick()
-            print(clock.get_fps())
             
 
     #UPDATE
@@ -285,7 +323,8 @@ def main():
             for rock in asteroidArray:
                 rock.update()
             if healthBar.updateHealth(player.col.checkCollision(asteroidArray, xDir, player)):
-                main()
+                resetGame()
+                state = "START"
     #DISPLAY
             gameDisplay()
             p.event.pump()
