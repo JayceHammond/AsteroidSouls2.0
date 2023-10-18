@@ -1,3 +1,4 @@
+import os
 import pygame as p
 from pygame import mixer
 import math
@@ -14,6 +15,9 @@ ORANGE = (255, 165, 0)
 YELLOW = (255, 255, 0)
 CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
+
+file_paths = os.listdir("Assets\SpaceshipAssets")
+shipImgs = []
 
 class Ship:
     def __init__(self, posx, posy, speed, img, width, height, xDir, yDir, health, screenSize):
@@ -39,11 +43,23 @@ class Ship:
         self.fire_cooldown = 15  # Add a cooldown period (in frames) between shots
         self.cooldown_counter = 0  # Initialize the cooldown counter
 
+        # Load all asteroid images into a list
+        self.ship_images = [p.image.load(os.path.join("Assets\SpaceshipAssets", path)) for path in file_paths]
+
+        # Initialize the current frame index
+        self.current_frame = 0
+
 
     def display(self, screen, mousePos):
         self.ship = p.image.load(self.img)
         self.ship = p.transform.rotate(self.ship, -math.degrees(self.getAngle(mousePos)))
         screen.blit(self.ship, (self.posx - 25, self.posy - 25))
+
+    def dash(self, stam, dist):
+        self.current_frame = (self.current_frame + 1) % len(self.ship_images)
+        if stam > 0:
+            self.posx += dist * self.xDir
+            self.posy += dist * self.yDir
 
     def update(self, xDir, yDir):
             self.posx = self.posx + self.speed * xDir

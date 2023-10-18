@@ -15,7 +15,6 @@ ORANGE = (255, 165, 0)
 YELLOW = (255, 255, 0)
 CYAN = (0, 255, 255)
 
-file_types = ("png")
 file_paths = os.listdir("Assets\AsteroidAssets")
 
 asteroidImgs = []

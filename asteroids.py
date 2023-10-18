@@ -28,7 +28,7 @@ size = (screenWidth, screenHeight)
 
 #PATHS
     #SPRITES
-playerSprite = "Assets\spaceship.png"
+playerSprite = "Assets\SpaceshipAssets\spaceship.png"
 #imgPaths = os.listdir("Assets\ParallaxAssets")
 bg_imgs = []
 for i in range(1, 5):
@@ -60,12 +60,15 @@ def gameInit():
     global surface
     global player
     global healthBar
+    global bg_music
     p.init()
+    p.mixer.init()
+    bg_music = p.mixer.Sound("Assets\SFX\StigmaDreamscapeTheme _eScape.wav")
+    bg_music.play(1)
     if state == "GAME":
         p.mouse.set_visible(False)
     else:
         p.mouse.set_visible(True)
-    mixer.init()
     screen = p.display.set_mode(size, p.RESIZABLE) 
     p.display.set_caption(title)
     surface = p.Surface(size)
@@ -228,6 +231,8 @@ def main():
                         xDir = 1
                     if event.key == p.K_a:
                         xDir = -1
+                    if event.key == p.K_q:
+                        player.dash(3, 20)
                 if event.type == p.KEYUP:
                     if event.key == p.K_w or event.key == p.K_s:
                         yDir = 0
