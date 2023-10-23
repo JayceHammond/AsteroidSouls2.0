@@ -5,7 +5,7 @@ import numpy
 import random as r
 
 p.mixer.init()
-dmgSound = p.mixer.Sound("Assets\SFX\dmgSFX.mp3")
+dmgSound = p.mixer.Sound("Assets\SFX\dmgSFX.ogg")
 
 class Collider:
     def __init__(self, parent):

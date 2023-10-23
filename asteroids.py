@@ -60,11 +60,11 @@ powerUpArr = ["heal", "bullet_size", "player_speed", "player_stamina"]
 
 #INITIALIZE SOUND
 p.mixer.init()
-bg_music = p.mixer.Sound("Assets\SFX\StigmaDreamscapeTheme _eScape.wav")
-shootSound = p.mixer.Sound("Assets\SFX\Laser.mp3")
-bulletGrowSound = p.mixer.Sound("Assets\SFX\MushroomSoundEffect.mp3")
-gunUpgradeSound = p.mixer.Sound("Assets\SFX\shotgun-reload.mp3")
-speedUpSound = p.mixer.Sound("Assets\SFX\LimitBreakSoundEffect.mp3")
+bg_music = p.mixer.Sound("Assets\SFX\StigmaDreamscapeTheme _eScape.ogg")
+shootSound = p.mixer.Sound("Assets\SFX\Laser.ogg")
+bulletGrowSound = p.mixer.Sound("Assets\SFX\MushroomSoundEffect.ogg")
+gunUpgradeSound = p.mixer.Sound("Assets\SFX\shotgun-reload.ogg")
+speedUpSound = p.mixer.Sound("Assets\SFX\LimitBreakSoundEffect.ogg")
 
 #INITIALIZE GAME
 def gameInit():
